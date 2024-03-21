@@ -9,6 +9,13 @@ const picklePosition = {x: 6, y: 1, z: 1};
 const picklePosition2 = {x: 6, y: 2, z: 1};
 const bananaPosition = {x: 2, y: 1, z: 1};
 const fishPosition = {x: 0, y: 1, z: 1};
+const charSize = .25;
+
+
+// rotations
+const pickleRotation = {x: 0, y: 1, z: 0};
+const bananaRotation = {x: 0, y: 1, z: 0};
+const fishRotation = {x: 0, y: 1, z: 0};
 
 // Scene
 const scene = new THREE.Scene();
@@ -24,12 +31,12 @@ document.body.appendChild( renderer.domElement );
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 camera.position.z=4.5;
 camera.position.y=1.5;
-// have the camera follow the character
+
 
 
 // Ground
 const ground = new THREE.Mesh(
-  new THREE.BoxGeometry( 15, 3, 30 ),
+  new THREE.BoxGeometry( 15, 1, 30 ),
   new THREE.MeshPhongMaterial( { color: 0x00aaaa } )
 ); 
 ground.position.y = -1;
@@ -37,14 +44,14 @@ scene.add( ground );
 
 // world???
 
-// load the vancouver model as the world
-// const world = new GLTFLoader();
-// world.load('vancouver.glb', (gltf) => {
-//   const vancouver = gltf.scene;
-//   vancouver.scale.set(5,5, 5);
-//   vancouver.position.y = 1;
-//   scene.add(vancouver);
-// });
+//load the vancouver model as the world
+const world = new GLTFLoader();
+world.load('vancouver.glb', (gltf) => {
+  const vancouver = gltf.scene;
+  vancouver.scale.set(6,6, 6);
+  vancouver.position.y = 1;
+  scene.add(vancouver);
+});
 //load a sphere as a world
 // const geometry = new THREE.SphereGeometry( 4, 32, 16 ); 
 // const material = new THREE.MeshPhongMaterial( { color: 0xa0aaa } ); 
@@ -56,15 +63,31 @@ scene.add( ground );
 const loader = new GLTFLoader();
 loader.load('Fish.glb', (gltf) => {
   const fishDude = gltf.scene;
-  fishDude.scale.set(0.5, 0.5, 0.5);
+  fishDude.scale.set(charSize, charSize, charSize);
   // make sure the fish is on the sphere but not in the sphere lol
   fishDude.position.set(fishPosition.x, fishPosition.y, fishPosition.z);
   ground.add(fishDude);
+  // add event listener to the fish
+ window.addEventListener('keydown', (event) => {
+    if (event.key === 'f') {
+      fishDude.position.x += 1;
+    }
+    if (event.key === 'a') {
+      fishDude.position.x -= 1;
+    }
+    if (event.key === 'w') {
+      fishDude.position.z -= 1;
+    }
+    if (event.key === 's') {
+      fishDude.position.z += 1;
+    }
+  });
+
 });
 // load the banana model and put him on the gorund
 loader.load('banana.glb', (gltf) => {
   const banana = gltf.scene;
-  banana.scale.set(0.5, 0.5, 0.5);
+  banana.scale.set(charSize, charSize, charSize);
   banana.position.set(bananaPosition.x, bananaPosition.y, bananaPosition.z);
   ground.add(banana);
 });
@@ -72,14 +95,14 @@ loader.load('banana.glb', (gltf) => {
 //load the pickle model and put him on the ground
 loader.load('pickle.glb', (gltf) => {
   const pickle = gltf.scene;
-  pickle.scale.set(0.5, 0.5, 0.5);
+  pickle.scale.set(charSize, charSize, charSize);
   pickle.position.set(picklePosition.x, picklePosition.y, picklePosition.z);
   pickle.rotateY(1);
   ground.add(pickle);
   
 });
 const font = new FontLoader();
-const fontTest = font.load('https://threejsfundamentals.org/threejs/resources/threejs/fonts/helvetiker_regular.typeface.json', (font) => {
+font.load('https://threejsfundamentals.org/threejs/resources/threejs/fonts/helvetiker_regular.typeface.json', (font) => {
     const color = 0x006699;
     const matLite = new THREE.MeshBasicMaterial({
       color: color,
@@ -99,7 +122,17 @@ const fontTest = font.load('https://threejsfundamentals.org/threejs/resources/th
 
     
     text.position.set(picklePosition2.x, picklePosition2.y, picklePosition2.z);
-    scene.add(text);})
+    scene.add(text);
+    // banana text
+    const message2 = "Banana Dude";
+    const shapes2 = font.generateShapes(message2, 1);
+    const geometry2 = new THREE.ShapeGeometry(shapes2);
+    geometry2.computeBoundingBox();
+    geometry2.translate(xMid, 0, 0);
+    const text2 = new THREE.Mesh(geometry2, matLite);
+    text2.position.set(bananaPosition.x, bananaPosition.y, bananaPosition.z);
+    scene.add(text2);
+  })
 
 // load a gltf model and put him on the sphere
 
