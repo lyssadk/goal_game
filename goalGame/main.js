@@ -5,10 +5,10 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 
 // positions
-const picklePosition = {x: 6, y: 1, z: 1};
-const picklePosition2 = {x: 6, y: 2, z: 1};
-const bananaPosition = {x: 2, y: 1, z: 1};
-const fishPosition = {x: 0, y: 1, z: 1};
+const picklePosition = {x: 6, y: 1.6, z: 3};
+const picklePosition2 = {x: 6, y: 1.6, z: 3};
+const bananaPosition = {x: -6, y: 1.6, z: 1};
+const fishPosition = {x: 0, y: 1.6, z: 1};
 const charSize = .25;
 
 
