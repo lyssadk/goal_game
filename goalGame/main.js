@@ -40,13 +40,32 @@ class Player {
   }
 }
 // --------------------------
-// all powerups/abilities
+// all powerups/abilities + their functions
 // --------------------------
 let shieldN;
 let specialBulletsM;
 let invincibilityI;
 let slowDownBulletL;
 let bigJumpV;
+
+//create a jump function that makes the player jump higher
+function bigJump() {
+  function up() {
+    player.position.y += 2;
+    
+  }
+  function down() {
+    player.position.y -= 2;
+    
+  }
+  function jump() {
+    up();
+    setTimeout(down, 150);
+  }
+
+  jump();
+
+}
 
 // create a shield that lasts 5 seconds
 function createShield() {
@@ -61,6 +80,8 @@ function createShield() {
   }, 5000);
 }
 // create bullets that when they hit the enemy, slows the enemy down
+// im aware i could def simplify this code cause im repeating the same stuff for the bullets but i
+// wanted to make sure i could get the bullets to work first
 function slowDownBullets(){
   const slowBullets=[];
   const slowBullet = new THREE.Mesh(
@@ -274,8 +295,9 @@ loader.load('Fish.glb', (gltf) => {
       // slow down bullets
       slowDownBullets();
     }
-    if (event.key === 'v' && bigJumpV === true) {
+    if (event.key === 'v' ) {
       // big jump
+      bigJump();
     }
   });
 
