@@ -48,6 +48,68 @@ let invincibilityI;
 let slowDownBulletL;
 let bigJumpV;
 
+// create a shield that lasts 5 seconds
+function createShield() {
+  const shield = new THREE.Mesh(
+    new THREE.SphereGeometry(0.5, 8, 8),
+    new THREE.MeshBasicMaterial({ color: 0x00ff00, transparent: true, opacity: 0.5})
+  );
+  shield.position.set(player.position.x, player.position.y -.7, player.position.z);
+  scene.add(shield);
+  setTimeout(() => {
+    scene.remove(shield);
+  }, 5000);
+}
+
+// create the speedy powered-up bullets
+function specialBullets() {
+  
+  const bullets =[];
+  const bullet = new THREE.Mesh(
+    new THREE.SphereGeometry(0.1, 8, 8),
+    new THREE.MeshBasicMaterial({ color: 0xffcc22 })
+  );
+  bullet.position.set(player.position.x, player.position.y - 1, player.position.z);
+  bullet.velocity = new THREE.Vector3(0, 0, -2);
+  bullets.push(bullet);
+  scene.add(bullet);
+  function moveBullets() {
+    bullets.forEach((bullet) => {
+      bullet.position.add(bullet.velocity);
+  });}
+  function removeBullets() {
+    bullets.forEach((bullet) => {
+      if (bullet.position.z < -30) {
+        scene.remove(bullet);
+      }
+    });
+  }
+  function detectCollision() {
+    bullets.forEach((bullet) => {
+      littleEnemies.forEach((enemy) => {
+        if (bullet.position.distanceTo(enemy.position) < 0.5) {
+          scene.remove(bullet);
+          scene.remove(enemy);
+        }
+      });
+      enemies.forEach((enemy) => {
+        if (bullet.position.distanceTo(enemy.position) < 0.5) {
+          scene.remove(bullet);
+          scene.remove(enemy);
+        }
+      });
+    });
+  }
+  function animateBullets() {
+    moveBullets();
+    removeBullets();
+    detectCollision();
+  }
+  
+  setInterval(animateBullets, 1000 / 80);
+  
+}
+
 
 // --------------------------
 // SCENE SETUP
@@ -267,8 +329,7 @@ font.load('https://threejsfundamentals.org/threejs/resources/threejs/fonts/helve
 
 
 //-------------------------------
-// BULLETS AND POWERUPS:
-// - basic bullets, shield, 
+// BASIC CHARACTER ABILITIES 
 //-------------------------------
 
 // create the basic bullets
@@ -333,67 +394,9 @@ function shootBullets() {
   setInterval(animateBullets, 1000 / 40);
 }
 
-// create the speedy powered-up bullets
-function specialBullets() {
-  
-  const bullets =[];
-  const bullet = new THREE.Mesh(
-    new THREE.SphereGeometry(0.1, 8, 8),
-    new THREE.MeshBasicMaterial({ color: 0xffcc22 })
-  );
-  bullet.position.set(player.position.x, player.position.y - 1, player.position.z);
-  bullet.velocity = new THREE.Vector3(0, 0, -2);
-  bullets.push(bullet);
-  scene.add(bullet);
-  function moveBullets() {
-    bullets.forEach((bullet) => {
-      bullet.position.add(bullet.velocity);
-  });}
-  function removeBullets() {
-    bullets.forEach((bullet) => {
-      if (bullet.position.z < -30) {
-        scene.remove(bullet);
-      }
-    });
-  }
-  function detectCollision() {
-    bullets.forEach((bullet) => {
-      littleEnemies.forEach((enemy) => {
-        if (bullet.position.distanceTo(enemy.position) < 0.5) {
-          scene.remove(bullet);
-          scene.remove(enemy);
-        }
-      });
-      enemies.forEach((enemy) => {
-        if (bullet.position.distanceTo(enemy.position) < 0.5) {
-          scene.remove(bullet);
-          scene.remove(enemy);
-        }
-      });
-    });
-  }
-  function animateBullets() {
-    moveBullets();
-    removeBullets();
-    detectCollision();
-  }
-  
-  setInterval(animateBullets, 1000 / 80);
-  
-}
-
-// create a shield that lasts 5 seconds
-function createShield() {
-  const shield = new THREE.Mesh(
-    new THREE.SphereGeometry(0.5, 8, 8),
-    new THREE.MeshBasicMaterial({ color: 0x00ff00, transparent: true, opacity: 0.5})
-  );
-  shield.position.set(player.position.x, player.position.y -.7, player.position.z);
-  scene.add(shield);
-  setTimeout(() => {
-    scene.remove(shield);
-  }, 5000);
-}
+// --------------------------
+// ENEMY INTERACTIONS
+// --------------------------
 
 // create a practice dummy that shoots back
 const littleEnemies = [];
