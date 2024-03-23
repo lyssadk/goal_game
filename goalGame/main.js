@@ -32,6 +32,62 @@ class Player {
     this.slowDownBullet = slowDownBullet;
     this.bigJump = bigJump;
   }
+  // getters and setters
+  get name() {
+    return this.name;
+  }
+  set name(name) {
+    this.name = name;
+  }
+  get health() {
+    return this.health;
+  }
+  set health(health) {
+    this.health = health;
+  }
+  get attack() {
+    return this.attack;
+  }
+  set attack(attack) {
+    this.attack = attack;
+  }
+  get defense() {
+    return this.defense;
+  }
+  set defense(defense) {
+    this.defense = defense;
+  }
+  get shield() {
+    return this.shield;
+  }
+  set shield(shield) {
+    this.shield = shield;
+  }
+  get specialBullets() {
+    return this.specialBullets;
+  }
+  set specialBullets(specialBullets) {
+    this.specialBullets = specialBullets;
+  }
+  get invincibility() {
+    return this.invincibility;
+  }
+  set invincibility(invincibility) {
+    this.invincibility = invincibility;
+  }
+  get slowDownBullet() {
+    return this.slowDownBullet;
+  }
+  set slowDownBullet(slowDownBullet) {
+    this.slowDownBullet = slowDownBullet;
+  }
+  get bigJump() {
+    return this.bigJump;
+  }
+  set bigJump(bigJump) {
+    this.bigJump = bigJump;
+  }
+
   saveProgress() {
     localStorage.setItem('player', JSON.stringify(this));
   }
@@ -39,6 +95,97 @@ class Player {
     return JSON.parse(localStorage.getItem('player'));
   }
 }
+
+
+// --------------------------
+// ENEMY CLASS SETUP
+// --------------------------
+class Enemy {
+  constructor(name, health, attack, defense, abilities, speed, position) {
+    this.name = name;
+    this.health = health;
+    this.attack = attack;
+    this.defense = defense;
+    this.abilities = abilities;
+    this.speed = speed;
+    this.position = position;
+  }
+
+  // getters and setters
+  get name() {
+    return this.name;
+  }
+  set name(name) {
+    this.name = name;
+  }
+  get health() {
+    return this.health;
+  }
+  set health(health) {
+    this.health = health;
+  }
+  get attack() {
+    return this.attack;
+  }
+  set attack(attack) {
+    this.attack = attack;
+  }
+  get defense() {
+    return this.defense;
+  }
+  set defense(defense) {
+    this.defense = defense;
+  }
+  get abilities() {
+    return this.abilities;
+  }
+  set abilities(abilities) {
+    this.abilities = abilities;
+  }
+  get speed() {
+    return this.speed;
+  }
+  set speed(speed) {
+    this.speed = speed;
+  }
+  get position() {
+    return this.position;
+  }
+  set position(position) {
+    this.position = position;
+  }
+}
+
+// --------------------------
+// WEAPON CLASS SETUP
+// --------------------------
+class Weapon {
+  constructor(name, attack) {
+    this.name = name;
+    this.attack = attack;
+  }
+  constructor(name, attack, specialEffect) {
+    this.name = name;
+    this.attack = attack;
+    this.specialEffect = specialEffect;
+  }
+  // getters and setters
+  get name() {
+    return this.name;
+  }
+  set name(name) {
+    this.name = name;
+  }
+  get attack() {
+    return this.attack;
+  }
+  set attack(attack) {
+    this.attack = attack;
+  }
+}
+
+
+
 // --------------------------
 // all powerups/abilities + their functions
 // --------------------------
@@ -295,7 +442,7 @@ loader.load('Fish.glb', (gltf) => {
       // slow down bullets
       slowDownBullets();
     }
-    if (event.key === 'v' ) {
+    if (event.key === 'v' && bigJumpV === true) {
       // big jump
       bigJump();
     }
@@ -521,7 +668,9 @@ animate();
 // okay so here is some of my logic i need to code out lol:
 // When they interact with an npc to upgrade an ability, it needs to save the users progress in a database
 // When they load the game, it needs to load the users progress from the database
-//
+// get the player class functionality smoother
+// have the red target move towards the player when they are near and start shooting at them
+
 
 
 
