@@ -16,10 +16,9 @@ Javascript
 
 # Useful Websites
 
-{Make a list of websites that you found helpful in this project}
-
-- [Web Site Name](http://url.link.goes.here)
-- [Web Site Name](http://url.link.goes.here)
+- [React Three Fiber Documentation](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction)
+- [ThreeJS website](https://threejs.org)
+- [The most essential resource](https://youtu.be/dQw4w9WgXcQ?feature=shared)
 
 # Future Work
 - Save User Data to a database
