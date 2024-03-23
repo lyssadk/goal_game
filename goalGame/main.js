@@ -16,6 +16,42 @@ const charSize = .25;
 const pickleRotation = {x: 0, y: 1, z: 0};
 const bananaRotation = {x: 0, y: 1, z: 0};
 const fishRotation = {x: 0, y: 1, z: 0};
+// --------------------------
+// Player class SETUP & saving/loading progress
+// --------------------------
+
+class Player {
+  constructor(name, health, attack, defense, shield, specialBullets, invincibility, slowDownBullet, bigJump) {
+    this.name = name;
+    this.health = health;
+    this.attack = attack;
+    this.defense = defense;
+    this.shield = shield;
+    this.specialBullets = specialBullets;
+    this.invincibility = invincibility;
+    this.slowDownBullet = slowDownBullet;
+    this.bigJump = bigJump;
+  }
+  saveProgress() {
+    localStorage.setItem('player', JSON.stringify(this));
+  }
+  static loadProgress() {
+    return JSON.parse(localStorage.getItem('player'));
+  }
+}
+// --------------------------
+// all powerups/abilities
+// --------------------------
+let shieldN;
+let specialBulletsM;
+let invincibilityI;
+let slowDownBulletL;
+let bigJumpV;
+
+
+// --------------------------
+// SCENE SETUP
+// --------------------------
 
 // Scene
 const scene = new THREE.Scene();
@@ -72,8 +108,7 @@ world.load('vancouver.glb', (gltf) => {
 //--------------------------------
 //// GLTF MODEL LOADER
 ////-----------------------------------
-let shieldN= false;
-let specialBulletsM = false;
+
 let player;
 // Load a gltf model and put him on the sphere
 const loader = new GLTFLoader();
@@ -83,7 +118,7 @@ loader.load('Fish.glb', (gltf) => {
   // make sure the fish is on the sphere but not in the sphere lol
   player.position.set(fishPosition.x, fishPosition.y, fishPosition.z);
   
-  player.rotateY(3);
+  player.rotateY(fishRotation.y);
   ground.add(player);
 
   const playerHealthBar = new THREE.Mesh(
@@ -123,6 +158,15 @@ loader.load('Fish.glb', (gltf) => {
       // special bullets
       specialBullets();
     }
+    if (event.key === 'i' && invincibilityI === true) {
+      // invibility
+    }
+    if (event.key === 'l' && slowDownBulletL === true) {
+      // slow down bullets
+    }
+    if (event.key === 'v' && bigJumpV === true) {
+      // big jump
+    }
   });
 
 });
@@ -134,6 +178,7 @@ loader.load('banana.glb', (gltf) => {
   banana.scale.set(charSize, charSize, charSize);
   banana.position.set(bananaPosition.x, bananaPosition.y, bananaPosition.z);
   ground.add(banana);
+
 });
 
 let pickle;
@@ -142,7 +187,7 @@ loader.load('pickle.glb', (gltf) => {
   pickle = gltf.scene;
   pickle.scale.set(charSize, charSize, charSize);
   pickle.position.set(picklePosition.x, picklePosition.y, picklePosition.z);
-  pickle.rotateY(1);
+  pickle.rotateY(pickleRotation.y);
   ground.add(pickle);
   
 });
@@ -333,7 +378,7 @@ function specialBullets() {
     detectCollision();
   }
   
-  setInterval(animateBullets, 1000 / 70);
+  setInterval(animateBullets, 1000 / 80);
   
 }
 
@@ -400,7 +445,10 @@ animate();
 
 
 
-
+// okay so here is some of my logic i need to code out lol:
+// When they interact with an npc to upgrade an ability, it needs to save the users progress in a database
+// When they load the game, it needs to load the users progress from the database
+//
 
 
 
