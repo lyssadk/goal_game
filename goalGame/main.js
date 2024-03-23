@@ -60,7 +60,54 @@ function createShield() {
     scene.remove(shield);
   }, 5000);
 }
+// create bullets that when they hit the enemy, slows the enemy down
+function slowDownBullets(){
+  const slowBullets=[];
+  const slowBullet = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.1, 0.1, 0.5, 8),
+    new THREE.MeshPhongMaterial({ color: 0x00ff00 })
+  )
+  slowBullet.position.set(player.position.x, player.position.y - 1, player.position.z);
+  slowBullet.velocity = new THREE.Vector3(0, 0, -1);
+  slowBullets.push(slowBullet);
+  scene.add(slowBullet)
+  function moveSlowBullets() {
+    slowBullets.forEach((slowBullet) => {
+      slowBullet.position.add(slowBullet.velocity);
+    });
+  }
+  function removeSlowBullets() {
+    slowBullets.forEach((slowBullet) => {
+      if (slowBullet.position.z < -10) {
+        scene.remove(slowBullet);
+      }
+    });
+  }
+  function detectCollision() {
+    slowBullets.forEach((slowBullet) => {
+      littleEnemies.forEach((enemy) => {
+        if (slowBullet.position.distanceTo(enemy.position) < 0.5) {
+          scene.remove(slowBullet);
+          // figure out how to slow the enemy when collision is detected
 
+        }
+      });
+      enemies.forEach((enemy) => {
+        if (slowBullet.position.distanceTo(enemy.position) < 0.5) {
+          scene.remove(slowBullet);
+          // figure out how to slow the enemy when collision is detected
+
+        }
+      });
+    });
+  }
+  function animateSlowBullets() {
+    moveSlowBullets();
+    removeSlowBullets();
+    detectCollision();
+  }
+  setInterval(animateSlowBullets, 1000 / 20);
+}
 // create the speedy powered-up bullets
 function specialBullets() {
   
@@ -225,6 +272,7 @@ loader.load('Fish.glb', (gltf) => {
     }
     if (event.key === 'l' && slowDownBulletL === true) {
       // slow down bullets
+      slowDownBullets();
     }
     if (event.key === 'v' && bigJumpV === true) {
       // big jump
