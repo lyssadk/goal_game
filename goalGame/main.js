@@ -31,159 +31,26 @@ class Player {
     this.invincibility = invincibility;
     this.slowDownBullet = slowDownBullet;
     this.bigJump = bigJump;
+    this.position = {x: 0, y: 0, z: 0};
   }
   // getters and setters
-  get name() {
-    return this.name;
-  }
-  set name(name) {
-    this.name = name;
-  }
-  get health() {
-    return this.health;
-  }
-  set health(health) {
-    this.health = health;
-  }
-  get attack() {
-    return this.attack;
-  }
-  set attack(attack) {
-    this.attack = attack;
-  }
-  get defense() {
-    return this.defense;
-  }
-  set defense(defense) {
-    this.defense = defense;
-  }
-  get shield() {
-    return this.shield;
-  }
-  set shield(shield) {
-    this.shield = shield;
-  }
-  get specialBullets() {
-    return this.specialBullets;
-  }
-  set specialBullets(specialBullets) {
-    this.specialBullets = specialBullets;
-  }
-  get invincibility() {
-    return this.invincibility;
-  }
-  set invincibility(invincibility) {
-    this.invincibility = invincibility;
-  }
-  get slowDownBullet() {
-    return this.slowDownBullet;
-  }
-  set slowDownBullet(slowDownBullet) {
-    this.slowDownBullet = slowDownBullet;
-  }
-  get bigJump() {
-    return this.bigJump;
-  }
-  set bigJump(bigJump) {
-    this.bigJump = bigJump;
-  }
+ 
 
-  saveProgress() {
-    localStorage.setItem('player', JSON.stringify(this));
-  }
-  static loadProgress() {
-    return JSON.parse(localStorage.getItem('player'));
-  }
+  // saveProgress() {
+  //   localStorage.setItem('player', JSON.stringify(this));
+  // }
+  // static loadProgress() {
+  //   return JSON.parse(localStorage.getItem('player'));
+  // }
 }
 
 
 // --------------------------
 // ENEMY CLASS SETUP
 // --------------------------
-class Enemy {
-  constructor(name, health, attack, defense, abilities, speed, position) {
-    this.name = name;
-    this.health = health;
-    this.attack = attack;
-    this.defense = defense;
-    this.abilities = abilities;
-    this.speed = speed;
-    this.position = position;
-  }
-
-  // getters and setters
-  get name() {
-    return this.name;
-  }
-  set name(name) {
-    this.name = name;
-  }
-  get health() {
-    return this.health;
-  }
-  set health(health) {
-    this.health = health;
-  }
-  get attack() {
-    return this.attack;
-  }
-  set attack(attack) {
-    this.attack = attack;
-  }
-  get defense() {
-    return this.defense;
-  }
-  set defense(defense) {
-    this.defense = defense;
-  }
-  get abilities() {
-    return this.abilities;
-  }
-  set abilities(abilities) {
-    this.abilities = abilities;
-  }
-  get speed() {
-    return this.speed;
-  }
-  set speed(speed) {
-    this.speed = speed;
-  }
-  get position() {
-    return this.position;
-  }
-  set position(position) {
-    this.position = position;
-  }
-}
-
 // --------------------------
 // WEAPON CLASS SETUP
 // --------------------------
-class Weapon {
-  constructor(name, attack) {
-    this.name = name;
-    this.attack = attack;
-  }
-  constructor(name, attack, specialEffect) {
-    this.name = name;
-    this.attack = attack;
-    this.specialEffect = specialEffect;
-  }
-  // getters and setters
-  get name() {
-    return this.name;
-  }
-  set name(name) {
-    this.name = name;
-  }
-  get attack() {
-    return this.attack;
-  }
-  set attack(attack) {
-    this.attack = attack;
-  }
-}
-
 
 
 // --------------------------
@@ -198,11 +65,11 @@ let bigJumpV;
 //create a jump function that makes the player jump higher
 function bigJump() {
   function up() {
-    player.position.y += 2;
+    playerOne.position.y += 2;
     
   }
   function down() {
-    player.position.y -= 2;
+    playerOne.position.y -= 2;
     
   }
   function jump() {
@@ -220,7 +87,7 @@ function createShield() {
     new THREE.SphereGeometry(0.5, 8, 8),
     new THREE.MeshBasicMaterial({ color: 0x00ff00, transparent: true, opacity: 0.5})
   );
-  shield.position.set(player.position.x, player.position.y -.7, player.position.z);
+  shield.position.set(playerOne.position.x, playerOne.position.y -.7, playerOne.position.z);
   scene.add(shield);
   setTimeout(() => {
     scene.remove(shield);
@@ -235,7 +102,7 @@ function slowDownBullets(){
     new THREE.CylinderGeometry(0.1, 0.1, 0.5, 8),
     new THREE.MeshPhongMaterial({ color: 0x00ff00 })
   )
-  slowBullet.position.set(player.position.x, player.position.y - 1, player.position.z);
+  slowBullet.position.set(playerOne.position.x, playerOne.position.y - 1, playerOne.position.z);
   slowBullet.velocity = new THREE.Vector3(0, 0, -1);
   slowBullets.push(slowBullet);
   scene.add(slowBullet)
@@ -284,7 +151,7 @@ function specialBullets() {
     new THREE.SphereGeometry(0.1, 8, 8),
     new THREE.MeshBasicMaterial({ color: 0xffcc22 })
   );
-  bullet.position.set(player.position.x, player.position.y - 1, player.position.z);
+  bullet.position.set(playerOne.position.x, playerOne.position.y - 1, playerOne.position.z);
   bullet.velocity = new THREE.Vector3(0, 0, -2);
   bullets.push(bullet);
   scene.add(bullet);
@@ -385,70 +252,76 @@ world.load('vancouver.glb', (gltf) => {
 //--------------------------------
 //// GLTF MODEL LOADER
 ////-----------------------------------
-
-let player;
-// Load a gltf model and put him on the sphere
+let playerOne = new Player('playerOne', 100, 10,10,true,false,false,false,false);
 const loader = new GLTFLoader();
-loader.load('Fish.glb', (gltf) => {
-  player = gltf.scene;
-  player.scale.set(charSize, charSize, charSize);
-  // make sure the fish is on the sphere but not in the sphere lol
-  player.position.set(fishPosition.x, fishPosition.y, fishPosition.z);
+// create the fish character
+function createCharacter(playerOne){
+  let player;
+  // Load a gltf model and put him on the sphere
   
-  player.rotateY(fishRotation.y);
-  ground.add(player);
+  loader.load('Fish.glb', (gltf) => {
+    player = gltf.scene;
+    player.scale.set(charSize, charSize, charSize);
+    // make sure the fish is on the sphere but not in the sphere lol
+    player.position.set(fishPosition.x, fishPosition.y, fishPosition.z);
+    
+    player.rotateY(fishRotation.y);
+    ground.add(player);
 
-  const playerHealthBar = new THREE.Mesh(
-    new THREE.BoxGeometry( 1, 0.1, 0.1 ),
-    new THREE.MeshPhongMaterial( { color: 0xff0000 } )
-  )
-  
-  playerHealthBar.position.set(player.position.x, player.position.y, player.position.z)
-  scene.add(playerHealthBar)
-  // add event listener to the fish
- window.addEventListener('keydown', (event) => {
-    if (event.key === 'd' || event.key === 'ArrowRight') {
-      player.position.x += 1;
-      playerHealthBar.position.x += 1;
-    }
-    if (event.key === 'a' || event.key === 'ArrowLeft') {
-      player.position.x -= 1;
-      playerHealthBar.position.x -= 1;
-    }
-    if (event.key === 'w'|| event.key === 'ArrowUp') {
-      player.position.z -= 1;
-      playerHealthBar.position.z -= 1;
-    }
-    if (event.key === 's' || event.key === 'ArrowDown') {
-      player.position.z += 1;
-      playerHealthBar.position.z += 1;
-    }
-    if (event.key === 'b') {
-      // basic bullets
-      shootBullets();
-    }
-    if (event.key === 'n' && shieldN === true) {
-      // shield
-      createShield();
-    }
-    if (event.key === 'm' && specialBulletsM === true) {
-      // special bullets
-      specialBullets();
-    }
-    if (event.key === 'i' && invincibilityI === true) {
-      // invibility
-    }
-    if (event.key === 'l' && slowDownBulletL === true) {
-      // slow down bullets
-      slowDownBullets();
-    }
-    if (event.key === 'v' && bigJumpV === true) {
-      // big jump
-      bigJump();
-    }
+    const playerHealthBar = new THREE.Mesh(
+      new THREE.BoxGeometry( 1, 0.1, 0.1 ),
+      new THREE.MeshPhongMaterial( { color: 0xff0000 } )
+    )
+    
+    playerHealthBar.position.set(player.position.x, player.position.y, player.position.z)
+    scene.add(playerHealthBar)
+    // add event listener to the fish
+  window.addEventListener('keydown', (event) => {
+      if (event.key === 'd' || event.key === 'ArrowRight') {
+        player.position.x += 1;
+        playerHealthBar.position.x += 1;
+      }
+      if (event.key === 'a' || event.key === 'ArrowLeft') {
+        player.position.x -= 1;
+        playerHealthBar.position.x -= 1;
+      }
+      if (event.key === 'w'|| event.key === 'ArrowUp') {
+        player.position.z -= 1;
+        playerHealthBar.position.z -= 1;
+      }
+      if (event.key === 's' || event.key === 'ArrowDown') {
+        player.position.z += 1;
+        playerHealthBar.position.z += 1;
+      }
+      if (event.key === 'b') {
+        // basic bullets
+        shootBullets(playerOne);
+      }
+      if (event.key === 'n' && playerOne.shield === true) {
+        // shield
+        createShield();
+      }
+      if (event.key === 'm' && playerOne.specialBullets === true) {
+        // special bullets
+        specialBullets();
+      }
+      if (event.key === 'i' && playerOne.invincibility === true) {
+        // invibility
+      }
+      if (event.key === 'l' && playerOne.slowDownBullet === true) {
+        // slow down bullets
+        slowDownBullets();
+      }
+      if (event.key === 'v' && playerOne.bigJump === true) {
+        // big jump
+        bigJump();
+      }
+    });
+
   });
+}
 
-});
+createCharacter(playerOne);
 
 let banana;
 // load the banana model and put him on the gorund
@@ -550,14 +423,16 @@ font.load('https://threejsfundamentals.org/threejs/resources/threejs/fonts/helve
 //-------------------------------
 
 // create the basic bullets
-function shootBullets() {
+function shootBullets(playerOne) {
+  console.log('shooting bullets yeehawww');
   const bullets = [];
   const bullet = new THREE.Mesh(
     new THREE.SphereGeometry(0.1, 8, 8),
     new THREE.MeshBasicMaterial({ color: 0x00ff00 })
   );
-  bullet.position.set(player.position.x, player.position.y - 1 , player.position.z);
-  bullet.velocity = new THREE.Vector3(0, 0, -1);
+  bullet.position.set(playerOne.position.x, playerOne.position.y - 1 , playerOne.position.z);
+  console.log(playerOne.position);
+  bullet.velocity = new THREE.Vector3(0, 0, 1);
   scene.add(bullet);
   bullets.push(bullet);
 
@@ -607,8 +482,9 @@ function shootBullets() {
     moveBullets();
     removeBullets();
     detectCollision();
+    console.log('bullets are moving');
   }
-  setInterval(animateBullets, 1000 / 40);
+  animateBullets();
 }
 
 // --------------------------
