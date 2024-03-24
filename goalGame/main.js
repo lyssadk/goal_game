@@ -263,7 +263,7 @@ function createCharacter(playerOne){
     player = gltf.scene;
     player.scale.set(charSize, charSize, charSize);
     // make sure the fish is on the sphere but not in the sphere lol
-    player.position.set(fishPosition.x, fishPosition.y, fishPosition.z);
+    player.position.set(playerOne.x, playerOne.y, playerOne.z);
     
     player.rotateY(fishRotation.y);
     ground.add(player);
@@ -273,28 +273,29 @@ function createCharacter(playerOne){
       new THREE.MeshPhongMaterial( { color: 0xff0000 } )
     )
     
-    playerHealthBar.position.set(player.position.x, player.position.y, player.position.z)
+    playerHealthBar.position.set(playerOne.position.x, playerOne.position.y, playerOne.position.z)
     scene.add(playerHealthBar)
     // add event listener to the fish
   window.addEventListener('keydown', (event) => {
       if (event.key === 'd' || event.key === 'ArrowRight') {
-        player.position.x += 1;
+        playerOne.position.x += 1;
         playerHealthBar.position.x += 1;
       }
       if (event.key === 'a' || event.key === 'ArrowLeft') {
-        player.position.x -= 1;
+        playerOne.position.x -= 1;
         playerHealthBar.position.x -= 1;
       }
       if (event.key === 'w'|| event.key === 'ArrowUp') {
-        player.position.z -= 1;
+        playerOne.position.z -= 1;
         playerHealthBar.position.z -= 1;
       }
       if (event.key === 's' || event.key === 'ArrowDown') {
-        player.position.z += 1;
+        playerOne.position.z += 1;
         playerHealthBar.position.z += 1;
       }
       if (event.key === 'b') {
         // basic bullets
+        console.log('event key b')
         shootBullets(playerOne);
       }
       if (event.key === 'n' && playerOne.shield === true) {
