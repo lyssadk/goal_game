@@ -438,6 +438,7 @@ function shootBullets() {
     new THREE.MeshBasicMaterial({ color: 0x00ff00 })
   );
   bullet.position.set(player.position.x, player.position.y - 1 , player.position.z);
+  // console.log(player.position);
   bullet.velocity = new THREE.Vector3(0, 0, -1);
   scene.add(bullet);
   bullets.push(bullet);
