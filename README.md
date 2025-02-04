@@ -5,7 +5,6 @@ I plan on making this a React ThreeJS game using CannonJS. Currently i am reorga
 
 
 
-[Where its at and working on](http://youtube.link.goes.here)
 
 # Development Environment
 Vite,
